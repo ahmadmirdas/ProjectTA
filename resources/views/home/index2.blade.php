@@ -14,47 +14,54 @@
     <!-- My CSS -->
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
 
-    <title>E-voting</title>
+    <title>E-voting TPS 2</title>
   </head>
   <body style="margin-top: 78px; background-image: url(../assets/img/election.png); background-size: cover;">
     <!-- Form Login -->
-    <form action="{{ route('coblos.kandidat') }}" method="POST">
-        {{ csrf_field() }}
-    <div class="container">
-        <h3 class="text-center" style="font-family: Viga;">SILAHKAN PILIH CALON PILIHAN ANDA</h3>
-        <div class="row justify-content-center">
-            <div class="row coblos">
-                 @foreach($data_kandidat as $item)
-                <div class="col-lg">
-                    <h4 class="text-center" style="">{{$item->id}}</h4>
-                    <img src="{{ asset('assets/img/'.$item->image) }}" width="220px" height="220px" alt="..." class="img-thumbnail">
-                    <p>{{$item->namakandidat}}</p> 
-                    <div class="form-check text-center">
-                      <input class="form-check-input" type="radio" name="kandidat_id" id="exampleRadios1" value="{{ $item->id }}" checked>
-                      <input type="hidden" name="tps_id" value="1">
-                      <label class="form-check-label" for="exampleRadios1">
-                        Coblos
-                      </label>
-                    </div>
-                </div>
-                @endforeach
-                
-            </div>
-        </div><br>
-        {{-- {{ dd($tps->toArray()) }} --}}
-        @foreach ($tps as $item)
-        @if ($item->status == FALSE)
-        <p></p>
-        @else
+    @if ($pemilihanCount < $tpsCountDPT->jumlahdpt)
+
+        <form action="{{ route('coblos2.kandidat') }}" method="POST">
+            {{ csrf_field() }}
+        <div class="container">
+            <h3 class="text-center" style="font-family: Viga;">SILAHKAN PILIH CALON PILIHAN ANDA</h3>
             <div class="row justify-content-center">
-                    <div class="col-sm-1">
-                        <button type="submit" class="btn btn-primary btn-lg">Selesai</button>
+                <div class="row coblos">
+                     @foreach($data_kandidat as $item)
+                    <div class="col-lg">
+                        <h4 class="text-center" style="">{{$item->id}}</h4>
+                        <img src="{{ asset('/storage/'.$item->image) }}" width="220px" height="220px" alt="..." class="img-thumbnail">
+                        <p>{{$item->namakandidat}}</p> 
+                        <div class="form-check text-center">
+                          <input class="form-check-input" type="radio" name="kandidat_id" id="exampleRadios1" value="{{ $item->id }}" >
+                          <input type="hidden" name="tps_id" value="2">
+                          <label class="form-check-label" for="exampleRadios1">
+                            Coblos
+                          </label>
+                        </div>
                     </div>
+                    @endforeach
+                    
                 </div>
-        @endif
-        @endforeach
-    </div>
-</form>
+            </div><br>
+            {{-- {{ dd($tps->toArray()) }} --}}
+            @foreach ($tps as $item)
+            @if ($item->status == FALSE)
+            <p></p>
+            @else
+                <div class="row justify-content-center">
+                        <div class="col-sm-1">
+                            <button type="submit" class="btn btn-primary btn-lg">Selesai</button>
+                        </div>
+                    </div>
+            @endif
+            @endforeach
+        </div>
+    </form>
+    @else
+        <p>Sudah terisi penuh dpt</p>
+    @endif
+
+    
 
     <!-- Jqueryku -->
     <script src="bootstrap/js/dist/jquery-3.4.1.min.js"></script>

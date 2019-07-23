@@ -24,8 +24,12 @@
           <input name="namakandidat" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="namakandidat" value="{{$kandidat->namakandidat}}">
         </div>
         <div class="form-group">
-          <label for="image">Foto</label>
-          <input name="image" type="file" class="form-control-file" id="image">
+          <label for="exampleInputEmail1">Foto</label>
+          <input name="image" type="file" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="namakandidat">
+        </div>
+        <div class="form-group">
+          <label for="exampleInputEmail1"></label>
+          <input name="status" type="hidden" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="namakandidat" value="0">
         </div>
         <div class="modal-footer">
           <a href="/admin/kandidat" class="btn btn-warning btn btn-sm">Kembali</a>

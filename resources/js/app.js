@@ -5,6 +5,7 @@
  */
 
 require('./bootstrap');
+require('../../Blockchain/Contract/voting')
 
 window.Vue = require('vue');
 

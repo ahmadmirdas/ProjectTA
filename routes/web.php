@@ -25,8 +25,9 @@ Route::get('tps/1/status', 'FrontEndController@checkStatusTps1')->name('status.c
 Route::post('tps/1/status/update', 'FrontEndController@checkStatusTps1Update')->name('status.check.tps.1.update');
 
 // Route::get('/', 'FrontEndController@kandidat')->name('index');
-
-Route::post('/coblos2', 'FrontEndController@coblos2')->name('coblos.kandidat');
+// 
+Route::post('/tps1', 'FrontEndController@coblos1')->name('coblos1.kandidat');
+Route::post('/tps2', 'FrontEndController@coblos2')->name('coblos2.kandidat');
 // Route::get('/masuk', function () {
 // 	return view('vendor.adminlte.loginku');
 // });
@@ -68,6 +69,10 @@ Route::get('/admin/total-suara', 'TotalSuaraController@tampil');
 
 // Admin Laporan Kandidat
 Route::get('admin/laporankandidat', 'LaporanKandidatController@laporankandidat');
+
+// Admin Berita Acara
+Route::get('/admin/berita-acara', 'BeritaAcaraController@tampil');
+Route::get('/admin/berita-acara/export', 'BeritaAcaraController@export')->name('export.berita-acara');
 
 Route::get('/home', 'HomeController@index')->name('home');
 

@@ -14,15 +14,14 @@
     <!-- My CSS -->
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
 
-    <title>E-voting</title>
+    <title>E-voting TPS 1</title>
     <script src="https://js.pusher.com/4.4/pusher.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
   </head>
   <body style="margin-top: 78px; background-image: url(../assets/img/election.png); background-size: cover;">
-    <!-- Form Login -->
-    {{-- <form action="{{ route('coblos.kandidat') }}" method="POST"> --}}
-        {{-- {{ csrf_field() }} --}}
 
+    {{-- <form action="{{ route('coblos1.kandidat') }}" method="POST">
+    {{ csrf_field() }} --}}        
     <div class="container">
         <h3 class="text-center" style="font-family: Viga;">SILAHKAN PILIH CALON PILIHAN ANDA</h3>
         <div class="row justify-content-center">
@@ -30,12 +29,12 @@
                  @foreach($data_kandidat as $item)
                 <div class="col-lg">
                     <h4 class="text-center" style="">{{$item->id}}</h4>
-                    <img src="{{ asset('assets/img/'.$item->image) }}" width="220px" height="220px" alt="..." class="img-thumbnail">
+                    <img src="{{ asset('/storage/'.$item->image) }}" onclick="selectVote({{ $item->id }})" width="220px" height="220px" alt="..." class="img-thumbnail" id="input">
                     <p>{{$item->namakandidat}}</p> 
                     <div class="form-check text-center">
-                      <input class="form-check-input" type="radio" name="kandidat_id" id="exampleRadios1" value="{{ $item->id }}" checked>
+                      <input class="form-check-input" type="radio" name="kandidat_id" id="{{ $item->id }}" value="{{ $item->id }}">
                       <input type="hidden" name="tps_id" value="1">
-                      <label class="form-check-label" for="exampleRadios1">
+                      <label class="form-check-label">
                         Coblos
                       </label>
                     </div>
@@ -45,21 +44,20 @@
             </div>
         </div><br>
         {{-- {{ dd($tps->toArray()) }} --}}
-        @foreach ($tps as $item)
-        @if ($item->status == TRUE)
+        
             <div class="row justify-content-center">
                 <div class="col-sm-1">
                     <div id="tampil">
-                        <button id="pemilih" type="submit" class="btn btn-primary btn-lg">Selesai</button>
+                        @if ($tps->status == 0)
+                          <button id="pemilih" onclick="" type="submit" class="btn btn-primary btn-lg">Off</button>
+                        @else
+                          <button id="pemilih" onclick="pemilih()" type="submit" class="btn btn-primary btn-lg">Selesai</button>
+                        @endif
                     </div>
                 </div>
             </div>
-            
-        @else
-
-        @endif
-        @endforeach
     </div>
+    {{-- </form> --}}
 {{-- </form> --}}
     {{-- <script src = "https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script> --}}
     {{-- <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script> --}}
@@ -73,8 +71,31 @@
       src="https://code.jquery.com/jquery-3.4.1.js"
       integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
       crossorigin="anonymous"></script>
-      <script>
+    
+    <script type="text/javascript">
+    
+    </script>
 
+    <script>
+    function selectVote(voteId) {
+      $("#"+voteId).prop('checked', true);
+    }
+
+    function pemilih() {
+        console.log(window.vote)
+        // $.ajax({
+        //     url: "{{ route('status.check.tps.1.update') }}",
+        //     type: "POST",
+        //     data: {
+        //         "_token": "{{ csrf_token() }}"
+        //     },
+        //     success: function(response) {
+                
+        //         // location.reload();
+                
+        //     }
+        // });
+    }
     // Enable pusher logging - don't include this in production
     Pusher.logToConsole = true;
 
@@ -87,13 +108,17 @@
     channel.bind('voted', function(data) {
       console.log(data.tps.status);
       console.log($("#pemilih").length);
-      if (data.tps.status == 1 && $("#pemilih").length == 0) {
-        $("#tampil").append("<button id='pemilih' type='submit' class='btn btn-primary btn-lg'>Selesai</button>");
+      if (data.tps.status == 1) {
+        if ($("#pemilih").length > 0) {
+          $("#pemilih").remove();
+        }
+        $("#tampil").append("<button id='pemilih' onclick='pemilih()' type='submit' class='btn btn-primary btn-lg'>Selesai</button>");
         // alert('sdf');
       } else {
         $("#pemilih").remove();
       }
     });
   </script>
+
   </body>
 </html>

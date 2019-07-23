@@ -26,6 +26,9 @@ class TotalSuaraController extends Controller
  					'total_suara' => $dataPemilih
  				];
   		}
+
+ 				// var_dump($data);
+ 				// die();
   		// dd($data);
   		return view('admin.totalsuara.show', compact('data'));
  	}

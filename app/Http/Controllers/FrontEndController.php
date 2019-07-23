@@ -18,6 +18,20 @@ class FrontEndController extends Controller
         return view('home.index', compact('data_kandidat'));
     }
 
+    public function coblos1(Request $request)
+    {
+        $perhitungan = PerhitunganSuara::create($request->all());
+
+        $tps = \App\Tps::where('id', 1);
+        
+            $tps->update([
+                'status' => FALSE
+            ]);
+        $tps = \App\Tps::where('id', 1)->first();
+        event(new SetStatusTps($tps));
+        return redirect()->back();   
+    }
+
     public function coblos2(Request $request)
     {
         $perhitungan = PerhitunganSuara::create($request->all());
@@ -35,7 +49,7 @@ class FrontEndController extends Controller
     {
         $data_kandidat = \App\Kandidat::all();
 
-        $tps = \App\Tps::where('id',1)->get();
+        $tps = \App\Tps::where('id',1)->first();
         
         return view('home.index', compact('data_kandidat','tps')); 
     }
@@ -46,7 +60,11 @@ class FrontEndController extends Controller
 
         $tps = \App\Tps::where('id',2)->get();
 
-        return view('home.index2', compact('data_kandidat', 'tps')); 
+        $tpsCountDPT = \App\Tps::where('id',2)->first();
+
+        $pemilihanCount = PerhitunganSuara::where('tps_id', 2)->get()->count();
+
+        return view('home.index2', compact('data_kandidat', 'tps', 'pemilihanCount', 'tpsCountDPT')); 
     }
 
     public function verify1(Request $request)
@@ -82,7 +100,12 @@ class FrontEndController extends Controller
 
     public function checkStatusTps1()
     {
-        $tps = \App\Tps::where('id',1)->get();
+        \App\Tps::where('id', 1)->update([
+            'status' => false
+        ]);
+
+        $tps = \App\Tps::where('id', 1)->first();
+        event(new SetStatusTps($tps));
 
         return response()->json([
             'data' => $tps,
@@ -103,24 +126,4 @@ class FrontEndController extends Controller
             'vote' => 0
         ]);
     }
-
-    // public function coblos(Request $request)
-    // {
-    // 	$nik = $request->nik;
-
-    // 	$nikWhere = Pemilih::where('nik', $request->nik)->first();
-
-    // 	if ($nikWhere == NULL) {
-    		
-    // 		Session::flash('message', 'Anda Salah Input NIK.');
-    // 		return redirect()->back();
-    // 	} elseif ($nikWhere->status == 1){
-
-    // 		Session::flash('message', 'Anda Sudah Nyoblos.');
-    // 		return redirect()->back();
-    // 	} else {
-    		
-    // 		return view('home/votepage');
-    // 	}
-    // }
 }

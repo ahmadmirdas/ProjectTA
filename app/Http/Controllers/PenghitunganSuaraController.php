@@ -19,17 +19,34 @@ class PenghitunganSuaraController extends Controller
  	public function show($id)
  	{
  		$suara = \App\Tps::find($id);
-
  		$tpsId = \App\PerhitunganSuara::where('tps_id', $id)->first()->id;
- 		// dd($data);
- 		
- 		$dataPemilih = DB::table('perhitungan_suara')
+  		$kandidat = \App\Kandidat::all();
+
+ 		$data = [];
+
+  		foreach ($kandidat as $item) {
+  			$dataPemilih = DB::table('perhitungan_suara')
  				->select('kandidat_id', DB::raw('count(kandidat_id) as total_suara'))
  				->groupBy('kandidat_id')
  				->where('tps_id', $tpsId)
  				->get();
-
-  		$kandidat = \App\Kandidat::all();
-  		return view('admin.suara.show', compact('suara', 'kandidat', 'dataPemilih'));
+ 				$data[]=[
+ 					'kandidat_id' => $item->id,
+ 					'namakandidat' => $item->namakandidat,
+ 					'total_suara' => $dataPemilih
+ 				];
+  		}
+  		// dd($data);
+ 		// $tpsId = \App\PerhitunganSuara::where('tps_id', $id)->first()->id;
+ 		// // dd($data);
+ 		
+ 		// $dataPemilih = DB::table('perhitungan_suara')
+ 		// 		->select('kandidat_id', DB::raw('count(kandidat_id) as total_suara'))
+ 		// 		->groupBy('kandidat_id')
+ 		// 		->where('tps_id', $tpsId)
+ 		// 		->get();
+  	// 	$kandidat = \App\Kandidat::all();
+ 		// 		dd($dataPemilih);
+  		return view('admin.suara.show', compact('suara', 'kandidat', 'dataPemilih', 'data'));
  	}
 }

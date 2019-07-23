@@ -69,14 +69,14 @@
         <th>#</th>
         <th>Nama Kandidat</th>
         <th>Foto</th>
-        {{-- <th>Aksi</th> --}}
+        <th>Aksi</th>
        </tr>
        @foreach($data_kandidat as $kandidat)
        <tr>
         <td>{{$kandidat->id}}</td>
         <td>{{$kandidat->namakandidat}}</td>
-        <td><img src="{{ asset('assets/img/'.$kandidat->image) }}" alt="" width="220" height="220" class="img-thumbnail"></td>
-     {{--    <td><a href="/admin/kandidat/{{$kandidat->id}}/edit-kandidat" class="btn btn-warning btn btn-sm">Edit</a></td> --}}
+        <td><img src="{{ asset('/storage/'.$kandidat->image) }}" alt="" width="220" height="220" class="img-thumbnail"></td>
+        <td><a href="/admin/kandidat/{{$kandidat->id}}/edit-kandidat" class="btn btn-warning btn btn-sm">Edit</a></td>
        {{--  <td><a href="/admin/kandidat/{{$kandidat->id}}/delete-kandidat" class="btn btn-danger btn btn-sm" onclick="return confirm('Yakin mau dihapus')">Hapus</a></td> --}}
       </tr>
       @endforeach
